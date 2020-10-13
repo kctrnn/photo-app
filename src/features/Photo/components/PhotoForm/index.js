@@ -1,36 +1,38 @@
 import React from 'react';
-import Select from 'react-select';
-import { Container, Form, Button } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
+import { Form, Formik, FastField } from 'formik';
+import InputField from 'custom-fields/InputField';
+import SelectField from 'custom-fields/SelectField';
 import { PHOTO_CATEGORY_OPTIONS } from 'constants/global';
 
 function PhotoForm(props) {
   return (
-    <Form>
-      <Container>
-        <Form.Group controlId='titleId'>
-          <Form.Label>Title</Form.Label>
-          <Form.Control class='title' placeholder='Eg: Wow nature ...' />
-        </Form.Group>
+    <Formik initialValues={{ title: '' }}>
+      {({ values, errors, touched }) => (
+        <Form>
+          <Container>
+            <FastField
+              name='title'
+              component={InputField}
+              label='Title'
+              placeholder='Eg: Wow nature ...'
+            />
 
-        <Form.Group controlId='categoryId'>
-          <Form.Label>Category</Form.Label>
-          <Select
-            id='categoryId'
-            class='categoryId'
-            options={PHOTO_CATEGORY_OPTIONS}
-            placeholder="What's your photo category?"
-          />
-        </Form.Group>
+            <FastField
+              name='categoryId'
+              component={SelectField}
+              label='Category'
+              placeholder="What's your photo category?"
+              options={PHOTO_CATEGORY_OPTIONS}
+            />
 
-        <Form.Group controlId='categoryId'>
-          <Form.Label>Photo</Form.Label>
-        </Form.Group>
-
-        <Button variant='primary' type='submit'>
-          Submit
-        </Button>
-      </Container>
-    </Form>
+            <Button variant='primary' type='submit'>
+              Submit
+            </Button>
+          </Container>
+        </Form>
+      )}
+    </Formik>
   );
 }
 
