@@ -5,7 +5,6 @@ import { Form } from 'react-bootstrap';
 
 SelectField.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
 
   label: PropTypes.string,
   placeholder: PropTypes.string,

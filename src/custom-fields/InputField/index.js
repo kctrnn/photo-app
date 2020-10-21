@@ -4,7 +4,6 @@ import { Form } from 'react-bootstrap';
 
 InputField.propTypes = {
   field: PropTypes.object.isRequired,
-  form: PropTypes.object.isRequired,
 
   type: PropTypes.string,
   label: PropTypes.string,
