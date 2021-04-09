@@ -1,10 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const NotFound = (props) => {
-  return <div>Not Found</div>;
+const NotFound = () => {
+  return <div>Oopss ... Not found</div>;
 };
-
-NotFound.propTypes = {};
 
 export default NotFound;
