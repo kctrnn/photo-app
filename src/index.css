@@ -7,9 +7,6 @@ body {
     'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  font-size: 1.6rem;
-  color: #333;
 }
 
 code {
@@ -17,7 +14,7 @@ code {
     monospace;
 }
 
-* {
+/* * {
   margin: 0;
   padding: 0;
 }
@@ -48,10 +45,10 @@ img {
   margin: 0 auto;
   padding-left: 2rem;
   padding-right: 2rem;
-}
+} */
 
 /* BUTTON */
-.btn {
+/* .btn {
   display: inline-block;
   padding: 1rem 2rem;
   border-radius: 4px;
@@ -67,4 +64,4 @@ img {
   font-weight: 500;
 
   cursor: pointer;
-}
+} */

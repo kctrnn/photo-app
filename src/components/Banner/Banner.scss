@@ -1,5 +1,5 @@
 .banner {
-  height: 24rem;
+  height: 15rem;
   display: grid;
   place-items: center;
 
@@ -9,5 +9,6 @@
 
   &-title {
     color: rgba(255, 255, 255, 0.85);
+    font-weight: 700;
   }
 }

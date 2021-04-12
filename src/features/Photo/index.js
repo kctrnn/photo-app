@@ -6,7 +6,7 @@ import MainPage from './pages/MainPage';
 
 const Photo = () => {
   let match = useRouteMatch();
-  console.log(match);
+  // console.log(match);
 
   return (
     <Switch>
