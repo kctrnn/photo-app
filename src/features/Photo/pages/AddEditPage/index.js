@@ -5,7 +5,6 @@ import { useParams } from 'react-router';
 
 const AddEditPage = () => {
   const { photoId } = useParams();
-  console.log('photo id:', photoId);
 
   // const isAddMode = !photoId;
 

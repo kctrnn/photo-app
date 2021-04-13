@@ -2,7 +2,7 @@
 
 ## Setup environment
 
-Github Project: https://github.com/paulnguyen-mn/redux-photo-app
+Github Project: https://github.com/kctrnn/photo-app
 
 ### 1. Setup ReactJS App via Create React App
 
@@ -69,3 +69,58 @@ function App() {
   );
 }
 ```
+
+## Custom Field
+
+- Cầu nối giữa UI control và React Hook Form.
+- UI control là một controlled component với props:
+  - name: tên xác định control
+  - value: giá trị của control
+  - onChange: trigger hàm này với giá trị mới khi có thay đổi
+  - onBlur: xác định khi nào thì control này bị touched
+
+```js
+const InputField = (props) => {
+  const { name, label, form } = props;
+  const {
+    control,
+    formState: { errors },
+  } = form;
+
+  return (
+    <Form.Group controlId={name}>
+      {label && <Form.Label>{label}</Form.Label>}
+
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <Form.Control
+            {...field}
+            type='text'
+            placeholder='Eg: Wow nature ...'
+            autoComplete='off'
+            isInvalid={!!errors[name]}
+          />
+        )}
+      />
+    </Form.Group>
+  );
+};
+```
+
+## Random Photo control
+
+RandomPhoto
+Props
+
+- name
+- imageUrl
+- onImageUrlChange
+- onRandomButtonBlur
+
+RandomPhotoField
+
+React Hook Form
+
+Yup

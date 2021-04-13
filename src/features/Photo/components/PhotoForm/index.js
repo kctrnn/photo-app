@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import InputField from 'components/form-controls/InputField';
+import RandomPhotoField from 'components/form-controls/RandomPhotoField';
 import SelectField from 'components/form-controls/SelectField';
 import { PHOTO_CATEGORY_OPTIONS } from 'constants/global';
 import React from 'react';
@@ -39,6 +40,8 @@ const PhotoForm = (props) => {
         options={PHOTO_CATEGORY_OPTIONS}
         placeholder="What's your photo category?"
       />
+
+      <RandomPhotoField name='photo' label='Photo' form={form} />
 
       <Button variant='primary' type='submit'>
         Add to album
