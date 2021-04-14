@@ -5,8 +5,12 @@ import Banner from 'components/Banner';
 import Images from 'constants/images';
 import { Container } from 'react-bootstrap';
 import PhotoList from 'features/Photo/components/PhotoList';
+import { useSelector } from 'react-redux';
 
 const MainPage = () => {
+  const photos = useSelector((state) => state.photos);
+  console.log(photos);
+
   return (
     <div className='photo-main'>
       <Banner title='Your awesome photos 🤚' backgroundUrl={Images.PINK_BG} />
@@ -17,7 +21,7 @@ const MainPage = () => {
             Add new photo
           </Link>
 
-          <PhotoList />
+          <PhotoList photoList={photos} />
         </Container>
       </section>
     </div>
