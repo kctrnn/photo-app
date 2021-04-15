@@ -1,0 +1,65 @@
+.photo {
+  position: relative;
+
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+
+  &-image {
+    width: 100%;
+    transition: transform 0.45s ease-in-out;
+  }
+
+  &-title {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  &-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    height: 100%;
+    width: 100%;
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(0, 0, 0, 0.8);
+
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+  }
+
+  &-buttons {
+    display: flex;
+    justify-content: space-between;
+
+    transform: translateY(1rem);
+    transition: transform 0.25s ease-in-out;
+
+    & > .btn {
+      width: 45%;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:hover > &-image {
+    transform: scale(1.35);
+  }
+
+  &:hover > &-overlay {
+    opacity: 1;
+  }
+
+  &:hover &-buttons {
+    transform: translateY(0);
+  }
+}

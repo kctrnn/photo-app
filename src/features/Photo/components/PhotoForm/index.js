@@ -8,20 +8,17 @@ import { Button, Spinner } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import './PhotoForm.scss';
+import PropTypes from 'prop-types';
 
 const schema = yup.object().shape({
   title: yup.string().required('This field is required.'),
-  category: yup.number().required('This field is required.').nullable(),
+  categoryId: yup.number().required('This field is required.').nullable(),
   photo: yup.string().required('This field is required.'),
 });
 
-const PhotoForm = ({ onSubmit }) => {
+const PhotoForm = ({ onSubmit, defaultValues, isAddMode }) => {
   const form = useForm({
-    defaultValues: {
-      title: '',
-      category: null,
-      photo: '',
-    },
+    defaultValues: defaultValues,
     resolver: yupResolver(schema),
   });
 
@@ -35,7 +32,7 @@ const PhotoForm = ({ onSubmit }) => {
       <InputField name='title' label='Title' form={form} />
 
       <SelectField
-        name='category'
+        name='categoryId'
         label='Category'
         form={form}
         options={PHOTO_CATEGORY_OPTIONS}
@@ -44,14 +41,32 @@ const PhotoForm = ({ onSubmit }) => {
 
       <RandomPhotoField name='photo' label='Photo' form={form} />
 
-      <Button variant='primary' type='submit'>
-        {isSubmitting && <Spinner animation='border' />}
-        Add to album
+      <Button
+        variant='primary'
+        type='submit'
+        className='d-flex align-items-center'
+      >
+        {isAddMode ? 'Add to album' : 'Update your photo'}
+        {isSubmitting && (
+          <Spinner className='ml-3' animation='grow' role='status'>
+            <span className='sr-only'>Loading...</span>
+          </Spinner>
+        )}
       </Button>
     </form>
   );
 };
 
-PhotoForm.propTypes = {};
+PhotoForm.propTypes = {
+  onSubmit: PropTypes.func,
+  defaultValues: PropTypes.object,
+  isAddMode: PropTypes.bool,
+};
+
+PhotoForm.defaultProps = {
+  onSubmit: null,
+  defaultValues: {},
+  isAddMode: false,
+};
 
 export default PhotoForm;

@@ -1,23 +1,47 @@
 import Banner from 'components/Banner';
 import PhotoForm from 'features/Photo/components/PhotoForm';
-import { addPhoto } from 'features/Photo/PhotoSlice';
+import { addPhoto, updatePhoto } from 'features/Photo/photoSlice';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router';
+import { randomNumber } from 'utils/common';
 
 const AddEditPage = () => {
   const dispatch = useDispatch();
+  const photoList = useSelector((state) => state.photos);
   const history = useHistory();
+
+  const { photoId } = useParams();
+  const isAddMode = !photoId;
+
+  const editPhoto = photoList.find((photo) => photo.id === +photoId);
+  console.log(editPhoto);
+
+  const defaultValues = isAddMode
+    ? {
+        title: '',
+        category: null,
+        photo: '',
+      }
+    : editPhoto;
 
   const handleSubmit = (data) =>
     new Promise((resolve) => {
       console.log('Form submit: ', data);
 
       setTimeout(() => {
-        const action = addPhoto(data);
-        console.log(action);
+        if (isAddMode) {
+          const newPhoto = {
+            ...data,
+            id: randomNumber(10000, 99999),
+          };
 
-        dispatch(action);
+          const action = addPhoto(newPhoto);
+          dispatch(action);
+        } else {
+          const action = updatePhoto(data);
+          dispatch(action);
+        }
 
         history.push('/photos');
         resolve(true);
@@ -28,7 +52,11 @@ const AddEditPage = () => {
     <div className='photo-edit'>
       <Banner title='Pick your amazing photo 🥰' />
 
-      <PhotoForm onSubmit={handleSubmit} />
+      <PhotoForm
+        onSubmit={handleSubmit}
+        defaultValues={defaultValues}
+        isAddMode={isAddMode}
+      />
     </div>
   );
 };
