@@ -48,4 +48,8 @@ InputField.propTypes = {
   label: PropTypes.string,
 };
 
+InputField.defaultProps = {
+  label: '',
+};
+
 export default InputField;

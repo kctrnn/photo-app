@@ -15,7 +15,6 @@ const AddEditPage = () => {
   const isAddMode = !photoId;
 
   const editPhoto = photoList.find((photo) => photo.id === +photoId);
-  console.log(editPhoto);
 
   const defaultValues = isAddMode
     ? {

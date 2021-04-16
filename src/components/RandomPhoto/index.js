@@ -1,12 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { getRandomImgUrl } from 'utils/common';
 import './RandomPhoto.scss';
-
-const getRandomImgUrl = () => {
-  const randomId = Math.trunc(Math.random() * 2000);
-  return `https://picsum.photos/id/${randomId}/300/300`;
-};
 
 const RandomPhoto = (props) => {
   // { name, value, onBlur, onChange }
@@ -55,6 +51,7 @@ RandomPhoto.defaultProps = {
   name: '',
   onImageUrlChange: null,
   onRandomButtonBlur: null,
+  imageUrl: '',
 };
 
 export default RandomPhoto;

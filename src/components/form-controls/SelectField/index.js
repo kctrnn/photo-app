@@ -61,6 +61,7 @@ SelectField.propTypes = {
 SelectField.defaultProps = {
   placeholder: '',
   options: [],
+  label: '',
 };
 
 export default SelectField;

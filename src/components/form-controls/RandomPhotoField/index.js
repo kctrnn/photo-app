@@ -54,4 +54,8 @@ RandomPhotoField.propTypes = {
   label: PropTypes.string,
 };
 
+RandomPhotoField.defaultProps = {
+  label: '',
+};
+
 export default RandomPhotoField;
