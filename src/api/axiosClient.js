@@ -14,6 +14,11 @@ const getFireBaseToken = async () => {
 
   // Logged in but current user is not fetched -> wait(10s)
   return new Promise((resolve, reject) => {
+    const waitTimer = setTimeout(() => {
+      reject(null);
+      console.log('Reject timeout');
+    }, 10000);
+
     const unregisterAuthObserver = firebase
       .auth()
       .onAuthStateChanged(async (user) => {
@@ -22,11 +27,11 @@ const getFireBaseToken = async () => {
         }
 
         const token = await user.getIdToken();
-
         console.log('[AXIOS] Logged in user token: ', token);
         resolve(token);
 
         unregisterAuthObserver();
+        clearTimeout(waitTimer);
       });
   });
 };
