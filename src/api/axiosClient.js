@@ -1,6 +1,35 @@
 import axios from 'axios';
 import queryString from 'query-string';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+
+const getFireBaseToken = async () => {
+  const currentUser = firebase.auth().currentUser;
+  if (currentUser) return currentUser.getIdToken();
+
+  // Not logged in
+  // const hasRememberedAccount = localStorage.getItem(
+  //   'firebaseui::rememberedAccounts'
+  // );
+  // if (!hasRememberedAccount) return null;
+
+  // Logged in but current user is not fetched -> wait(10s)
+  return new Promise((resolve, reject) => {
+    const unregisterAuthObserver = firebase
+      .auth()
+      .onAuthStateChanged(async (user) => {
+        if (!user) {
+          reject(null);
+        }
+
+        const token = await user.getIdToken();
+
+        console.log('[AXIOS] Logged in user token: ', token);
+        resolve(token);
+
+        unregisterAuthObserver();
+      });
+  });
+};
 
 const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -12,12 +41,16 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(async (config) => {
   // Handle token here ...
-  const currentUser = firebase.auth().currentUser;
 
-  if (currentUser) {
-    const token = await currentUser.getIdToken();
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+  // const currentUser = firebase.auth().currentUser; // null
+
+  // if (currentUser) {
+  //   const token = await currentUser.getIdToken();
+  //   config.headers.Authorization = `Bearer ${token}`;
+  // }
+
+  const token = await getFireBaseToken();
+  config.headers.Authorization = `Bearer ${token}`;
 
   return config;
 });
