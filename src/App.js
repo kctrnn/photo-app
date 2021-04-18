@@ -1,7 +1,10 @@
+import { unwrapResult } from '@reduxjs/toolkit';
 import productApi from 'api/productApi';
+import { getMe } from 'app/userSlice';
 import SignIn from 'features/Auth/pages/SignIn';
 import firebase from 'firebase/app';
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   BrowserRouter as Router,
   Redirect,
@@ -22,6 +25,9 @@ const config = {
 firebase.initializeApp(config);
 
 function App() {
+  const [productList, setProductList] = useState([]);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchProductList = async () => {
       try {
@@ -30,7 +36,8 @@ function App() {
           _limit: 10,
         };
         const response = await productApi.getAll(params);
-        console.log(response);
+
+        setProductList(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -43,17 +50,26 @@ function App() {
     const unregisterAuthObserver = firebase
       .auth()
       .onAuthStateChanged(async (user) => {
-        // setIsSignedIn(!!user);
-
         if (!user) {
           // user logs out, handle something here
           console.log('User is not logged in');
           return;
         }
+
+        // Get me when signed in
+        try {
+          const actionResult = await dispatch(getMe());
+
+          const currentUser = unwrapResult(actionResult);
+          console.log('Logged in user: ', currentUser);
+        } catch (error) {
+          console.log('Failed to login ', error.message);
+          // show toast error
+        }
       });
 
     return () => unregisterAuthObserver();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className='photo-app'>
