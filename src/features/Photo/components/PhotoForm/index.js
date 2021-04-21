@@ -29,7 +29,12 @@ const PhotoForm = ({ onSubmit, defaultValues, isAddMode }) => {
 
   return (
     <form className='photo-form' onSubmit={handleSubmit(onSubmit)}>
-      <InputField name='title' label='Title' form={form} />
+      <InputField
+        name='title'
+        label='Title'
+        form={form}
+        placeholder='Eg: Wow nature ...'
+      />
 
       <SelectField
         name='categoryId'

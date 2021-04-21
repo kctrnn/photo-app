@@ -5,7 +5,7 @@ import { Form, FormControl } from 'react-bootstrap';
 import { Controller } from 'react-hook-form';
 
 const InputField = (props) => {
-  const { name, label, form } = props;
+  const { name, label, form, placeholder, type } = props;
   const {
     control,
     formState: { errors },
@@ -22,9 +22,9 @@ const InputField = (props) => {
         render={({ field }) => (
           <Form.Control
             {...field}
-            type='text'
+            type={type}
             isInvalid={!!errors[name]}
-            placeholder='Eg: Wow nature ...'
+            placeholder={placeholder}
             autoComplete='off'
           />
         )}
@@ -46,10 +46,14 @@ InputField.propTypes = {
   name: PropTypes.string.isRequired,
 
   label: PropTypes.string,
+  placeholder: PropTypes.string,
+  type: PropTypes.string,
 };
 
 InputField.defaultProps = {
   label: '',
+  placeholder: '',
+  type: 'text',
 };
 
 export default InputField;

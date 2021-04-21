@@ -1,24 +1,12 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import axiosClient from './axiosClient';
 
 const userApi = {
-  // fake API
-  getMe: () =>
-    new Promise((resolve, reject) => {
-      // reject(new Error('MY CUSTOM ERROR'));
-      // return;
+  login: (payload) => {
+    const url = '/auth/local';
+    return axiosClient.post(url, payload);
+  },
 
-      setTimeout(() => {
-        const currentUser = firebase.auth().currentUser;
-
-        resolve({
-          id: currentUser.uid,
-          name: currentUser.displayName,
-          email: currentUser.email,
-          photoUrl: currentUser.photoURL,
-        });
-      }, 500);
-    }),
+  getMe: () => {},
 };
 
 export default userApi;

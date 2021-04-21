@@ -1,28 +1,40 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import userApi from 'api/userApi';
+import StorageKeys from 'constants/storage-keys';
 
-export const getMe = createAsyncThunk(
-  'users/getMe',
-  async (params, thunkAPI) => {
-    // thunkAPI.dispatch(...)
-    const currentUser = await userApi.getMe();
-    return currentUser;
-  }
-);
+export const login = createAsyncThunk('user/login', async (payload) => {
+  const data = await userApi.login(payload);
+
+  // save data to local storage
+  localStorage.setItem(StorageKeys.TOKEN, data.jwt);
+  localStorage.setItem(StorageKeys.USER, JSON.stringify(data.user));
+
+  return data.user;
+});
 
 export const userSlice = createSlice({
-  name: 'users',
+  name: 'user',
   initialState: {
-    current: {},
+    current: JSON.parse(localStorage.getItem(StorageKeys.USER)) || {},
+    settings: {},
   },
 
-  reducers: {},
+  reducers: {
+    logout(state) {
+      // clear local storage
+      localStorage.removeItem(StorageKeys.USER);
+      localStorage.removeItem(StorageKeys.TOKEN);
+
+      state.current = {};
+    },
+  },
 
   extraReducers: {
-    [getMe.fulfilled]: (state, action) => {
+    [login.fulfilled]: (state, action) => {
       state.current = action.payload;
     },
   },
 });
+export const { logout } = userSlice.actions;
 
 export default userSlice.reducer;

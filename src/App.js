@@ -1,10 +1,6 @@
-import { unwrapResult } from '@reduxjs/toolkit';
 import productApi from 'api/productApi';
-import { getMe } from 'app/userSlice';
-import SignIn from 'features/Auth/pages/SignIn';
-import firebase from 'firebase/app';
+import LoginPage from 'features/Auth/pages/LoginPage';
 import React, { Suspense, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import {
   BrowserRouter as Router,
   Redirect,
@@ -17,27 +13,14 @@ import NotFound from './components/NotFound';
 // Lazy load - Code splitting
 const Photo = React.lazy(() => import('./features/Photo'));
 
-// Configure Firebase.
-const config = {
-  apiKey: process.env.REACT_APP_FIREBASE_API,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-};
-firebase.initializeApp(config);
-
 function App() {
   const [productList, setProductList] = useState([]);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProductList = async () => {
       try {
-        const params = {
-          _page: 1,
-          _limit: 10,
-        };
-        const response = await productApi.getAll(params);
-
-        setProductList(response.data);
+        const response = await productApi.getAll();
+        setProductList(response);
       } catch (error) {
         console.log(error);
       }
@@ -46,30 +29,7 @@ function App() {
     fetchProductList();
   }, []);
 
-  useEffect(() => {
-    const unregisterAuthObserver = firebase
-      .auth()
-      .onAuthStateChanged(async (user) => {
-        if (!user) {
-          // user logs out, handle something here
-          console.log('User is not logged in');
-          return;
-        }
-
-        // Get me when signed in
-        try {
-          const actionResult = await dispatch(getMe());
-
-          const currentUser = unwrapResult(actionResult);
-          console.log('Logged in user: ', currentUser);
-        } catch (error) {
-          console.log('Failed to login ', error.message);
-          // show toast error
-        }
-      });
-
-    return () => unregisterAuthObserver();
-  }, [dispatch]);
+  console.log('products: ', productList);
 
   return (
     <div className='photo-app'>
@@ -81,7 +41,7 @@ function App() {
             <Redirect exact from='/' to='/photos' />
 
             <Route path='/photos' component={Photo} />
-            <Route path='/signin' component={SignIn} />
+            <Route path='/signin' component={LoginPage} />
 
             <Route component={NotFound} />
           </Switch>
