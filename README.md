@@ -124,3 +124,136 @@ RandomPhotoField
 React Hook Form
 
 Yup
+
+## Feature Auth/Login
+
+### 1. Setup userApi
+- signIn(): Gửi username + password lên server để đổi lại một JWT token
+
+```js
+/api/userApi.js
+
+const userApi = {
+  login: (payload) => {
+    const url = '/auth/local';
+    return axiosClient.post(url, payload);
+  },
+};
+```
+
+### 2. Lưu thông tin user vào Redux
+- Sau khi có thông tin token, lưu nó xuống localStorage (cùng với user)
+- Lưu thông tin người dùng vào redux
+
+```js
+/app/userSlice.js
+
+export const login = createAsyncThunk('user/login', async (payload) => {
+  const data = await userApi.login(payload);
+
+  // save data to local storage
+  localStorage.setItem(StorageKeys.TOKEN, data.jwt);
+  localStorage.setItem(StorageKeys.USER, JSON.stringify(data.user));
+
+  return data.user;
+});
+
+export const userSlice = createSlice({
+  name: 'user',
+  initialState: {
+    current: JSON.parse(localStorage.getItem(StorageKeys.USER)) || {},
+  },
+
+  reducers: {
+    logout(state) {
+      // clear local storage
+      localStorage.removeItem(StorageKeys.USER);
+      localStorage.removeItem(StorageKeys.TOKEN);
+
+      state.current = {};
+    },
+  },
+
+  extraReducers: {
+    [login.fulfilled]: (state, action) => {
+      state.current = action.payload;
+    },
+  },
+});
+```
+
+### 3. Chuẩn bị login form (features/Auth/components/LoginForm/)
+### 4. Handle login form submit
+```js
+const LoginPage = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const handleSubmit = async (values) => {
+    try {
+      const action = login(values);
+      const resultAction = await dispatch(action);
+
+      unwrapResult(resultAction);
+      history.push('/photos');
+    } catch (error) {
+      console.log('Failed to login:', error);
+    }
+  };
+  return (
+    <div className='auth-login'>
+      <h1 className='text-center'>Sign In</h1>
+      
+      <LoginForm onSubmit={handleSubmit} />
+    </div>
+  );
+};
+```
+
+### 5. Tự động gắn JWT vào requests
+```js
+const axiosClient = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
+  headers: {
+    'content-type': 'application/json',
+  },
+  paramsSerializer: (params) => queryString.stringify(params),
+});
+
+axiosClient.interceptors.request.use(async (config) => {
+  const customHeaders = {};
+
+  const accessToken = localStorage.getItem(StorageKeys.TOKEN);
+  if (accessToken) {
+    customHeaders.Authorization = `Bearer ${accessToken}`; // ahjhj
+  }
+
+  return {
+    ...config,
+    headers: {
+      ...customHeaders, // auto attach token
+      ...config.headers, // but you can override for some requests
+    },
+  };
+  
+  // return config
+});
+```
+- An example of changing baseURL & headers
+```js
+/api/somethingApi.js
+
+const getExternalApi = () => {
+  const url = '/resource-name';
+  const config = {
+    baseURL: 'https://your-new-base-api-url.com/api',
+    headers: {
+      Authorization: 'your-new-token-to-use-in-new-api'
+    },
+  };
+
+  return axiosClient.get(url, config);
+}
+```
+
+Happy coding^^
