@@ -23,7 +23,7 @@ npm i --save react-router-dom
 ### 4. Add UI lib
 
 ```
-npm i --save reactstrap
+npm i react-bootstrap bootstrap@4.6.0
 ```
 
 ## Tổ chức folder
