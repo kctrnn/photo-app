@@ -1,4 +1,4 @@
-# Mini Project: Photo App
+# Mini Project: Photo App 👀
 
 ## Setup environment
 
