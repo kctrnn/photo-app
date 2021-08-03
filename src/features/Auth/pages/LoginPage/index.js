@@ -1,20 +1,20 @@
-import { Chip, makeStyles } from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
-import FaceIcon from '@material-ui/icons/Face';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { login } from 'app/userSlice';
-import LoginForm from 'features/Auth/components/LoginForm';
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { Chip, makeStyles } from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
+import FaceIcon from "@material-ui/icons/Face";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { login } from "app/userSlice";
+import LoginForm from "features/Auth/components/LoginForm";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '5rem',
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "5rem",
 
-    '& > *': {
+    "& > *": {
       margin: theme.spacing(1),
     },
   },
@@ -35,25 +35,25 @@ const LoginPage = () => {
       const resultAction = await dispatch(action);
 
       unwrapResult(resultAction);
-      history.push('/photos');
+      history.push("/photos");
     } catch (error) {
-      console.log('Failed to login:', error);
+      console.log("Failed to login:", error);
     }
   };
 
+  // Fake login
   const handleBruhClick = () => {
     const values = {
-      identifier: 'bruh@gmail.com',
-      password: '123123123',
+      username: "Bruh",
     };
 
     handleSubmit(values);
   };
 
+  // Fake login
   const handleDavidClick = () => {
     const values = {
-      identifier: 'david@gmail.com',
-      password: '123123123',
+      username: "David",
     };
 
     handleSubmit(values);

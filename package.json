@@ -24,6 +24,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-select": "^4.3.0",
+    "sass": "^1.37.2",
     "web-vitals": "^1.1.1",
     "yup": "^0.32.9"
   },
@@ -50,8 +51,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "node-sass": "^5.0.0"
   }
 }

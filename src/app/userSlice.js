@@ -1,9 +1,23 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import userApi from 'api/userApi';
-import StorageKeys from 'constants/storage-keys';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import userApi from "api/userApi";
+import StorageKeys from "constants/storage-keys";
 
-export const login = createAsyncThunk('user/login', async (payload) => {
-  const data = await userApi.login(payload);
+export const login = createAsyncThunk("user/login", async (payload) => {
+  // const data = await userApi.login(payload);
+
+  // Fake login here
+  const data = await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({
+        jwt: "fake_jwt",
+        user: {
+          id: 21,
+          username: payload.username,
+          email: "fake@gmail.com",
+        },
+      });
+    }, 1000);
+  });
 
   // save data to local storage
   localStorage.setItem(StorageKeys.TOKEN, data.jwt);
@@ -13,7 +27,7 @@ export const login = createAsyncThunk('user/login', async (payload) => {
 });
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState: {
     current: JSON.parse(localStorage.getItem(StorageKeys.USER)) || {},
     settings: {},
